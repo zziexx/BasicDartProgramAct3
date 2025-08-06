@@ -1,0 +1,66 @@
+import 'dart:io';
+
+void main() {
+  // Welcome message
+  print('Dart Basic Calculator');
+  print('---------------------');
+  
+  // Get first number
+  double num1 = getNumber('Enter first number:');
+
+  // Get operation
+  String operation = getOperation();
+
+  // Get second number
+  double num2 = getNumber('Enter second number:', operation);
+
+  // Calculate and display result
+  double result = calculate(num1, num2, operation);
+  print('Result: $num1 $operation $num2 = $result');
+
+  print('\nCalculation complete!');
+}
+
+double getNumber(String prompt, [String? operation]) {
+  double number;
+  while (true) {
+    print(prompt);
+    String? input = stdin.readLineSync();
+    if (input != null && double.tryParse(input) != null) {
+      number = double.parse(input);
+      if (operation == '/' && number == 0) {
+        print('Cannot divide by zero. Please enter a non-zero number.');
+        continue;
+      }
+      return number;
+    }
+    print('Invalid number. Please try again.');
+  }
+}
+
+String getOperation() {
+  String operation;
+  while (true) {
+    print('Choose operation (+, -, *, /):');
+    operation = stdin.readLineSync()!.trim();
+    if (['+', '-', '*', '/'].contains(operation)) {
+      return operation;
+    }
+    print('Invalid operator. Please enter +, -, *, or /');
+  }
+}
+
+double calculate(double num1, double num2, String operation) {
+  switch (operation) {
+    case '+':
+      return num1 + num2;
+    case '-':
+      return num1 - num2;
+    case '*':
+      return num1 * num2;
+    case '/':
+      return num1 / num2;
+    default:
+      throw Exception('Invalid operation');
+  }
+}
